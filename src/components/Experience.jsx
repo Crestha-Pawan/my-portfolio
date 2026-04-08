@@ -1,4 +1,3 @@
-// src/components/Experience.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -48,41 +47,38 @@ const Experience = () => {
         <div className="max-w-4xl mx-auto relative">
           <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-red-500" />
           
-          {experiences.map((exp, idx) => (
-            <ExperienceCard key={idx} exp={exp} index={idx} inView={inView} />
-          ))}
+          {experiences.map((exp, idx) => {
+            const isEven = idx % 2 === 0;
+
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: idx * 0.2, duration: 0.6 }}
+                className={`relative flex flex-col md:flex-row gap-6 mb-12 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+              >
+                <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-6 w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
+                  <FiBriefcase size={14} className="text-white" />
+                </div>
+
+                <div className="flex-1 md:w-1/2 pl-12 md:pl-0">
+                  <div className={`glass-card p-6 ${isEven ? 'md:mr-6' : 'md:ml-6'}`}>
+                    <h3 className="text-white font-bold mb-1">{exp.title}</h3>
+                    <p className="text-purple-400 mb-2">{exp.company}</p>
+                    <p className="text-gray-300 mb-3">{exp.period}</p>
+                    <p className="text-gray-200">{exp.description}</p>
+                  </div>
+                </div>
+                <div className="flex-1 hidden md:block" />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 };
-
-{experiences.map((exp, idx) => {
-    const isEven = idx % 2 === 0;
-  
-  return (
-    <motion.div
-  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  viewport={{ once: true, amount: 0.2 }}
-  transition={{ delay: index * 0.2, duration: 0.6 }}
-      className={`relative flex flex-col md:flex-row gap-6 mb-12 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-    >
-      <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-6 w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
-        <FiBriefcase size={14} className="text-white" />
-      </div>
-      
-      <div className="flex-1 md:w-1/2 pl-12 md:pl-0">
-        <div className={`glass-card p-6 ${isEven ? 'md:mr-6' : 'md:ml-6'}`}>
-        <h3 className="text-white font-bold mb-1">{exp.title}</h3>
-        <p className="text-purple-400 mb-2">{exp.company}</p>
-        <p className="text-gray-300 mb-3">{exp.period}</p>
-        <p className="text-gray-200">{exp.description}</p>
-        </div>
-      </div>
-      <div className="flex-1 hidden md:block" />
-    </motion.div>
-  );
-})};
 
 export default Experience;
